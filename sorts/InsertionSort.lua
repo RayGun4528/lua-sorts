@@ -1,5 +1,10 @@
 local InsertionSort = {}
 
+--[[
+	Sorts `array` via the insertion sorting algorithm.
+
+	Returns the sorted `array` for convenience.
+]]
 function InsertionSort.sort(array)
 	for i = 1, #array - 1 do
 		local J = i
@@ -13,7 +18,7 @@ function InsertionSort.sort(array)
 		end
 	end
 
-	return
+	return array
 end
 
 return InsertionSort
