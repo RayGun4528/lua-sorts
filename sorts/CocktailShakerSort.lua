@@ -1,5 +1,10 @@
 local CocktailShakerSort = {}
 
+--[[
+	Sorts `array` via the cocktail shaker sorting algorithm.
+
+	Returns the sorted `array` for convenience.
+]]
 function CocktailShakerSort.sort(array)
 	repeat
 		local IsSwapped = false
