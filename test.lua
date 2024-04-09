@@ -90,7 +90,20 @@ local function TestSort(sort_name)
 
 	TestedCounter = TestedCounter + 1
 	print(string.format("#%i Testing %s", TestedCounter, sort_name))
+
+	local TestingCases = {}
 	for case_name, test_array in pairs(TestCases) do
+		-- Ensure any random sorting doesn't took too long to test
+		if sort_name == "BogoSort" or sort_name == "BozoSort" then
+			if #test_array < 10 then
+				TestingCases[case_name] = test_array
+			end
+		else
+			TestingCases[case_name] = test_array
+		end
+	end
+
+	for case_name, test_array in pairs(TestingCases) do
 		local Completed, Result = pcall(function()
 			return Sorter.sort(CloneArray(test_array))
 		end)
