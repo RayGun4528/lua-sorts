@@ -18,7 +18,8 @@ local function Sort(array, i, j)
 end
 
 --[[
-	Sorts `array` via the slow sorting algorithm.
+	Sorts `array` via the slow sorting algorithm. 
+	This sorting algorithm is horribly inefficent and should never be used seriously.
 
 	Returns the sorted `array` for convenience.
 ]]

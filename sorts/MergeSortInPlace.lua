@@ -42,7 +42,7 @@ end
 
 --[[
 	Sorts `array` via the merge sorting algorithm. 
-	This variant of MergeSort is in-place, meaning this variant doesn't use additional tables to store extra data.
+	This variant of MergeSort is in-place, meaning this variant doesn't use additional space during sorting.
 
 	Returns the sorted `array` for convenience.
 ]]

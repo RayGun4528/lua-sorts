@@ -17,6 +17,7 @@ end
 
 --[[
 	Sorts `array` via the stooge sorting algorithm.
+	This sorting algorithm is horribly inefficent and should never be used seriously.
 
 	Returns the sorted `array` for convenience.
 ]]
