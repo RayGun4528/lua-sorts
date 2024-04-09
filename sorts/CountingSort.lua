@@ -10,8 +10,8 @@ end
 
 --[[
 	Sorts `array` via the counting sorting algorithm. 
-    This is a implementation that doesn't support sorting negative numbers and zero.
-    As such, trying to sort unsupported numbers will result in an error.
+    This is a implementation that doesn't support sorting negative numbers. 
+	As such, trying to sort them will result in an error.
     
 	Returns the sorted `array` for convenience.
 ]]
@@ -26,7 +26,7 @@ function CountingSort.sortPositive(array)
 			Max = v
 		end
 
-		if v <= 0 then
+		if v < 0 then
 			error(
 				string.format(
 					"CountingSort.sortPositive doesn't support sorting the number %i. This method only supports integers >= 1.",
@@ -36,9 +36,11 @@ function CountingSort.sortPositive(array)
 		end
 	end
 
-	local Count = Populate({}, 0, Max)
+	-- Allow 0 to be supported by adding 1
+	local Count = Populate({}, 0, Max + 1)
 	for i, v in pairs(array) do
-		Count[v] = Count[v] + 1
+		local Index = v + 1
+		Count[Index] = Count[Index] + 1
 	end
 
 	for i = 2, #Count do
@@ -47,8 +49,9 @@ function CountingSort.sortPositive(array)
 
 	local Out = Populate({}, 0, #array)
 	for _, v in pairs(array) do
-		Out[Count[v]] = v
-		Count[v] = Count[v] - 1
+		local Index = v + 1
+		Out[Count[Index]] = v
+		Count[Index] = Count[Index] - 1
 	end
 
 	for i, v in pairs(Out) do
