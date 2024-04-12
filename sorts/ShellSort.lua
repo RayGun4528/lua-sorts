@@ -2,8 +2,7 @@ local ShellSort = {}
 
 --[[
 	Sorts `array` via the shell sorting algorithm. 
-	This sorting algorithm is horribly inefficent and should never be used seriously.
-
+	
 	Returns the sorted `array` for convenience.
 ]]
 function ShellSort.sort(array)

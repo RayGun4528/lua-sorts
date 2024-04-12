@@ -5,7 +5,7 @@ local function BiggestPowerOfTwoLessThan(n)
 	while true do
 		local CurrentPowerOfTwo = math.ldexp(1, Exponent)
 		if CurrentPowerOfTwo >= n then
-			-- Once the current power of 2 exceeds `n`,  it so we return the power of 2 that's less than `n`
+			-- Shrink the exceeded `CurrentPowerOfTwo` to ensure we actually return a number that's less than `n`
 			return CurrentPowerOfTwo / 2
 		end
 
