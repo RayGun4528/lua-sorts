@@ -9,20 +9,18 @@ local function GetSortNames()
 	return io.popen([[dir ".\sorts\" /b]]):lines()
 end
 
-local function IsSorted(array)
-	if #array == 0 then
-		return true
+local function IsSame(array1, array2)
+	if #array1 ~= #array2 then
+		return false
 	end
 
-	for index, value in pairs(array) do
-		if index == #array then
-			return true
-		end
-
-		if value > array[index + 1] then
+	for index, value1 in pairs(array1) do
+		if value1 ~= array2[index] then
 			return false
 		end
 	end
+
+	return true
 end
 
 local function CloneArray(array)
@@ -36,26 +34,29 @@ end
 
 local TestCases = {
 	-- Shuffled number cases
-	ShuffleA = { 1, 2, 4, 3 },
-	ShuffleB = { 7, 1, 2, 5, 3, 9, 4, 6, 8 },
-	ShuffleC = { 1, 3, 5, 7, 9, 2, 4, 6, 8, 10, 11, 13, 15, 12, 14 },
-	ShuffleD = { -4, 0, 2, -2, 4 },
-	ShuffleE = { -1, 7, 65, 16, -12 },
-	ShuffleF = { -90, -30, -60, -20, 0 },
+	ShuffleA = { Input = { 1, 2, 4, 3 }, Expected = { 1, 2, 3, 4 } },
+	ShuffleB = { Input = { 7, 1, 2, 5, 3, 9, 4, 6, 8 }, Expected = { 1, 2, 3, 4, 5, 6, 7, 8, 9 } },
+	ShuffleC = {
+		Input = { 1, 3, 5, 7, 9, 2, 4, 6, 8, 10, 11, 13, 15, 12, 14 },
+		Expected = { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15 },
+	},
+	ShuffleD = { Input = { -4, 0, 2, -2, 4 }, Expected = { -4, -2, 0, 2, 4 } },
+	ShuffleE = { Input = { -1, 7, 65, 16, -12 }, Expected = { -12, -1, 7, 16, 65 } },
+	ShuffleF = { Input = { -90, -30, -60, -20, 0 }, Expected = { -90, -60, -30, -20, 0 } },
 
 	-- Duplicated number cases
-	DuplicatedA = { 2, 5, 5, 4 },
-	DuplicatedB = { 0, 0, 1, 0 },
-	DuplicatedC = { -5, -12, -5, -6 },
-	DuplicatedD = { -2, -2, 6, 0, 8, 8 },
+	DuplicatedA = { Input = { 2, 5, 5, 4 }, Expected = { 2, 4, 5, 5 } },
+	DuplicatedB = { Input = { 0, 0, 1, 0 }, Expected = { 0, 0, 0, 1 } },
+	DuplicatedC = { Input = { -5, -12, -5, -6 }, Expected = { -12, -6, -5, -5 } },
+	DuplicatedD = { Input = { -2, -2, 6, 0, 8, 8 }, Expected = { -2, -2, 0, 6, 8, 8 } },
 
 	-- Special cases
-	SpecialSorted = { 1, 2, 3, 4 },
-	SpecialReversed = { 4, 3, 2, 1 },
-	SpecialEmpty = {},
-	SpecialOnePositive = { 1 },
-	SpecialOneNegative = { -1 },
-	SpecialZero = { 0 },
+	SpecialSorted = { Input = { 1, 2, 3, 4 }, Expected = { 1, 2, 3, 4 } },
+	SpecialReversed = { Input = { 4, 3, 2, 1 }, Expected = { 1, 2, 3, 4 } },
+	SpecialEmpty = { Input = {}, Expected = {} },
+	SpecialOnePositive = { Input = { 1 }, Expected = { 1 } },
+	SpecialOneNegative = { Input = { -1 }, Expected = { -1 } },
+	SpecialZero = { Input = { 0 }, Expected = { 0 } },
 }
 
 local TestedCounter = 0
@@ -95,11 +96,11 @@ local function TestSort(sort_name)
 	for case_name, test_array in pairs(TestCases) do
 		-- Ensure any random sorting doesn't took too long to test
 		if sort_name == "BogoSort" or sort_name == "BozoSort" then
-			if #test_array < 10 then
-				TestingCases[case_name] = test_array
+			if #test_array.Input < 10 then
+				TestingCases[case_name] = test_array.Input
 			end
 		else
-			TestingCases[case_name] = test_array
+			TestingCases[case_name] = test_array.Input
 		end
 	end
 
@@ -110,7 +111,7 @@ local function TestSort(sort_name)
 
 		local Success = false
 		if Completed then
-			Success = IsSorted(Result)
+			Success = IsSame(Result, TestCases[case_name].Expected)
 		end
 
 		table.insert(TestedCases, case_name)
